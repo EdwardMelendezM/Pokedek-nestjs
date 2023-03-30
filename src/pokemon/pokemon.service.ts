@@ -22,14 +22,7 @@ export class PokemonService {
       const pokemon = await this.pokemonModel.create(createPokemonDto);
       return pokemon;
     } catch (error) {
-      if (error.code === 11000) {
-        throw new BadRequestException(
-          `Pokemon exists in db ${JSON.stringify(error.keyValue)}`,
-        );
-      }
-      throw new InternalServerErrorException(
-        `Can't create Pokemon - Check server log`,
-      );
+      this.handleExceptions(error);
     }
   }
 
@@ -73,18 +66,30 @@ export class PokemonService {
       }
       return { ...pokemon, ...updatePokemonDto };
     } catch (error) {
-      if (error.code === 11000) {
-        throw new BadRequestException(
-          `Pokemon exists in db ${JSON.stringify(error.keyValue)}`,
-        );
-      }
-      throw new InternalServerErrorException(
-        `Can't update Pokemon - Check server log`,
-      );
+      this.handleExceptions(error);
     }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} pokemon`;
+  async remove(id: string) {
+    // const pokemon = await this.findOne(id);
+    // await pokemon.deleteOne();
+
+    const { deletedCount } = await this.pokemonModel.deleteOne({ _id: id });
+    if (deletedCount === 0) {
+      throw new BadRequestException(`Pokemon with id ${id} not found`);
+    }
+    return { deletedCount };
+  }
+
+  private handleExceptions(error: any) {
+    if (error.code === 11000) {
+      throw new BadRequestException(
+        `Pokemon exists in db ${JSON.stringify(error.keyValue)}`,
+      );
+    }
+    console.log(error);
+    throw new InternalServerErrorException(
+      `Can't ejecute Pokemon - Check server log`,
+    );
   }
 }
