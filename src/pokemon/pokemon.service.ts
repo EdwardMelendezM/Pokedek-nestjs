@@ -8,6 +8,7 @@ import { isValidObjectId, Model } from 'mongoose';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
+import { paginationDto } from 'src/common/dto/pagination.dpo';
 
 @Injectable()
 export class PokemonService {
@@ -26,9 +27,15 @@ export class PokemonService {
     }
   }
 
-  async findAll() {
+  async findAll(pagination: paginationDto) {
+    const { limit = 10, offset = 0 } = pagination;
     try {
-      return await this.pokemonModel.find({});
+      return await this.pokemonModel
+        .find({})
+        .limit(limit)
+        .skip(offset)
+        .sort({ no: 1 })
+        .select('-__v');
     } catch (error) {
       throw new InternalServerErrorException(
         `Can't find Pokemon - Check server log`,
