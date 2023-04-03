@@ -20,7 +20,21 @@ yarn add -g @nestjs/cli
 ````
 docker-compose up -d
 ````
+5. Clone the file __.env.template__ and rename to 
 
+````
+.env
+````
+6. Complete the variable in the define environment in the 
+
+````
+.env
+````
+7. Ejecute with
+
+````
+yarn start:dev
+````
 5. Rebuild the database with a seed
 
 ````
