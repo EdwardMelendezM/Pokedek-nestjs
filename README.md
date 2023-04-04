@@ -35,10 +35,25 @@ docker-compose up -d
 ````
 yarn start:dev
 ````
-5. Rebuild the database with a seed
+8. Rebuild the database with a seed
 
 ````
 http://localhost:3000/api/v2/seed
+````
+
+# Production Build
+
+1. Create the file
+
+````
+.env.prod
+````
+
+2. Completed the production variables
+
+3. Create the image
+````
+docker-compose -f docker-compose.prod.yaml --env-file .env.prod up --build
 ````
 
 ## Stack used
