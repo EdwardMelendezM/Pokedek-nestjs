@@ -30,7 +30,7 @@ lerna-debug.log*
 
 #Variables de entorno
 .env
-
+.env.prod
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
